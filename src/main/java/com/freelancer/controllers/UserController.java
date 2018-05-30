@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,24 +24,37 @@ public class UserController {
 	UserServices userServ;
 	
 	
-	@RequestMapping(method= RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping
 	@ResponseBody
-	public  UserEntity salvar(@RequestBody UserEntity user) {
+	public  UserEntity saveAndUpdate(@RequestBody UserEntity user) {
 		
 		return userServ.saveAndUpdate(user) ;
+		
 	}
 	
-	
-	@RequestMapping(value="/all", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping
 	@ResponseBody
 	public  List<UserEntity> listar() {
+		
 		return userServ.listAllUsers() ;
+		
 	}
 	
 	@RequestMapping(value="/buscar{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public  Optional<UserEntity> findbyid(@Param("id") Integer id) {
+	public  Optional<UserEntity> findbyid(@Param("id") Integer id) {	
+		
 		return userServ.findbyid(id) ;
+		
 	}
+
+	@RequestMapping(value="/deletar{id}", method= RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public void deleteById(@Param("id") Integer id) {	
+		
+		userServ.delete(id);
+		
+	}
+	
 	
 }
