@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class JobOfferEntity {
@@ -11,8 +12,8 @@ public class JobOfferEntity {
 	@Id
 	@GeneratedValue( strategy=GenerationType.AUTO )
 	private Integer id;
-	private String description;
-	private String title;
-	private long precoOferecido;
+	
+	@ManyToOne
+	private UserEntity owner;
 	
 }
