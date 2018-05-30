@@ -1,8 +1,8 @@
-package com.freelancer.www.repository;
+package com.freelancer.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.freelancer.www.model.UserEntity;
+import com.freelancer.model.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Integer>{
 	

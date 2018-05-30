@@ -1,4 +1,4 @@
-package com.freelancer.www.model;
+package com.freelancer.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
