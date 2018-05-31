@@ -17,7 +17,7 @@ import com.freelancer.model.UserEntity;
 import com.freelancer.services.UserServices;
 
 @Controller
-@RequestMapping(value="/cliente")
+@RequestMapping(value="/user")
 public class UserController {
 	
 	@Autowired

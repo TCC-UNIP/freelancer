@@ -25,7 +25,48 @@ public class UserEntity {
 	
 	private Date datanascimento;
 	
-	 @OneToMany( targetEntity=JobOfferEntity.class )
-	private List<JobOfferEntity> ofertasVagas;
+	 @OneToMany( targetEntity=JobEntity.class )
+	private List<JobEntity> ofertasVagas;
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Date getDatanascimento() {
+		return datanascimento;
+	}
+
+	public void setDatanascimento(Date datanascimento) {
+		this.datanascimento = datanascimento;
+	}
+
+	public List<JobEntity> getOfertasVagas() {
+		return ofertasVagas;
+	}
+
+	public void setOfertasVagas(List<JobEntity> ofertasVagas) {
+		this.ofertasVagas = ofertasVagas;
+	}
+
+	 
 }
