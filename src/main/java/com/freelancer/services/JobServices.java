@@ -1,5 +1,7 @@
 package com.freelancer.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,5 +18,9 @@ public class JobServices {
 	public JobEntity saveAndUpdate(JobEntity job) {
 		return jobRepository.save(job);
 	}
-
+	
+	//usuario com permissão de administrador buscar todos usuarios
+	public List<JobEntity> listarServicos(){
+		return jobRepository.findAll();
+	}
 }
