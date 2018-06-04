@@ -7,7 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class JobEntity {
@@ -23,6 +26,8 @@ public class JobEntity {
 	private int salario;
 	
 	@ManyToOne
+	@JoinColumn(name="owner_id")
+	
 	private UserEntity owner;
 
 	public Integer getId() {
@@ -49,6 +54,7 @@ public class JobEntity {
 		this.salario = salario;
 	}
 
+	@JsonBackReference
 	public UserEntity getOwner() {
 		return owner;
 	}

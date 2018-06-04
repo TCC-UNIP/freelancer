@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class UserEntity {
 	
@@ -25,7 +27,7 @@ public class UserEntity {
 	
 	private Date datanascimento;
 	
-	 @OneToMany( targetEntity=JobEntity.class )
+	 @OneToMany(targetEntity= JobEntity.class, mappedBy = "owner" )
 	private List<JobEntity> ofertasVagas;
 
 	public Integer getId() {
@@ -59,7 +61,7 @@ public class UserEntity {
 	public void setDatanascimento(Date datanascimento) {
 		this.datanascimento = datanascimento;
 	}
-
+	@JsonManagedReference
 	public List<JobEntity> getOfertasVagas() {
 		return ofertasVagas;
 	}

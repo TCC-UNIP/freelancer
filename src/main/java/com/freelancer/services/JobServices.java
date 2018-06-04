@@ -1,6 +1,7 @@
 package com.freelancer.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,9 @@ public class JobServices {
 	//usuario com permissão de administrador buscar todos usuarios
 	public List<JobEntity> listarServicos(){
 		return jobRepository.findAll();
+	}
+	
+	public Optional<JobEntity> listByOwner(Integer id){
+		return jobRepository.findById(id);
 	}
 }
