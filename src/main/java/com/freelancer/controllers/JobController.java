@@ -40,10 +40,17 @@ public class JobController {
 		return jobServ.listarServicos();
 	}
 	
-	@RequestMapping(value="/dono{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="/find{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public Optional<JobEntity> listByOwner(@Param("id") Integer id){
-		return jobServ.listByOwner(id);
-		
+	public Optional<JobEntity> findOne(@Param("id") Integer id){
+		return jobServ.findOne(id);
 	}
+	
+	@RequestMapping(value="/deletar{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public void deletar(@Param("id") Integer id){
+		 jobServ.deletar(id);
+	}
+	
+	
 }

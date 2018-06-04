@@ -25,7 +25,14 @@ public class JobServices {
 		return jobRepository.findAll();
 	}
 	
-	public Optional<JobEntity> listByOwner(Integer id){
+	public void deletar(Integer id) {
+		 jobRepository.deleteById(id);;
+	}
+	
+	public Optional<JobEntity> findOne(Integer id) {
+		
 		return jobRepository.findById(id);
 	}
+	
+
 }
