@@ -27,7 +27,6 @@ public class JobEntity {
 	
 	@ManyToOne
 	@JoinColumn(name="owner_id")
-	
 	private UserEntity owner;
 
 	public Integer getId() {

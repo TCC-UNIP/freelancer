@@ -34,4 +34,6 @@ public class UserServices {
 	public Optional<UserEntity> findbyid(Integer id) {
 		return userRepository.findById(id);		
 	}
+	
+	
 }

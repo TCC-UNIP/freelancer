@@ -41,6 +41,7 @@ public class UserController {
 		
 	}
 	
+	
 	@RequestMapping(value="/buscar{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public  Optional<UserEntity> findbyid(@Param("id") Integer id) {	

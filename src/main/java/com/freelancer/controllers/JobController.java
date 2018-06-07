@@ -15,6 +15,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 
 import com.freelancer.model.JobEntity;
+import com.freelancer.repository.JobRepository;
 import com.freelancer.services.JobServices;
 
 
@@ -25,12 +26,12 @@ public class JobController {
 	@Autowired
 	JobServices jobServ;
 
-	
-	@PostMapping
+	//salva passando o id de um usuario
+	@RequestMapping(value="/save{id}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public  JobEntity saveAndUpdate(@RequestBody JobEntity job) {
+	public  JobEntity saveAndUpdate(@RequestBody JobEntity job, @Param("id") Integer id) {
 		
-		return jobServ.saveAndUpdate(job);
+		return jobServ.saveAndUpdate(job,id);
 		
 	}
 	
@@ -39,18 +40,25 @@ public class JobController {
 	public List<JobEntity> listaTodosJobs(){
 		return jobServ.listarServicos();
 	}
-	
+	//encontra por id
 	@RequestMapping(value="/find{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public Optional<JobEntity> findOne(@Param("id") Integer id){
 		return jobServ.findOne(id);
 	}
-	
+	//deleta por id
 	@RequestMapping(value="/deletar{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public void deletar(@Param("id") Integer id){
 		 jobServ.deletar(id);
 	}
 	
+
+//busca todos os jobs relacionada de um usuario
+	@RequestMapping(value="/all{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public List<JobEntity> allUserJobs(@Param("id") Integer id){
+		 return jobServ.findAllUserJobs(id);
+	}
 	
 }

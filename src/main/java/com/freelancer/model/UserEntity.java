@@ -27,7 +27,7 @@ public class UserEntity {
 	
 	private Date datanascimento;
 	
-	 @OneToMany(targetEntity= JobEntity.class, mappedBy = "owner" )
+    @OneToMany(targetEntity= JobEntity.class, mappedBy = "owner" )
 	private List<JobEntity> ofertasVagas;
 
 	public Integer getId() {
