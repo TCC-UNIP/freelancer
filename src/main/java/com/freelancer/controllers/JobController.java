@@ -1,6 +1,7 @@
 package com.freelancer.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 
@@ -55,10 +58,13 @@ public class JobController {
 	
 
 //busca todos os jobs relacionada de um usuario
-	@RequestMapping(value="/all{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="/all/{id}/{page}/{nitens}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public List<JobEntity> allUserJobs(@Param("id") Integer id){
-		 return jobServ.findAllUserJobs(id);
+	public List<JobEntity> allUserJobs(@PathVariable("id") Integer id,@PathVariable("page") int page, @PathVariable("nitens") int nitens){
+		
+		Page<JobEntity> pageRequest = jobServ.findAllUserJobs(id, PageRequest.of(page, nitens));
+		
+		return pageRequest.getContent();
 	}
 	
 }

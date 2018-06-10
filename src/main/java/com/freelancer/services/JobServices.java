@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.freelancer.model.JobEntity;
@@ -48,9 +50,9 @@ public class JobServices {
 		return jobRepository.findById(id);
 	}
 	
-	public List<JobEntity> findAllUserJobs(Integer id){
+	public Page<JobEntity> findAllUserJobs(Integer id, PageRequest page){
 		Optional <UserEntity> userOptional = userRepository.findById(id);
-		return jobRepository.findByOwner(userOptional.get());
+		return jobRepository.findByOwner(userOptional.get(), page);
 		
 	}
 

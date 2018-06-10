@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.freelancer.model.UserEntity;
@@ -27,8 +29,8 @@ public class UserServices {
 		userRepository.delete(user);
 	}
 	
-	public List<UserEntity> listAllUsers(){
-		return userRepository.findAll();
+	public Page<UserEntity> listAllUsers(PageRequest page){
+		return userRepository.findAll(page);
 	}
 	
 	public Optional<UserEntity> findbyid(Integer id) {
