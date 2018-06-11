@@ -50,6 +50,11 @@ public class JobServices {
 		return jobRepository.findById(id);
 	}
 	
+	public Page<JobEntity> findByTitulo(String titulo, PageRequest page) {
+		
+		return jobRepository.findByTituloContainingIgnoreCase(titulo, page);
+	}
+	
 	public Page<JobEntity> findAllUserJobs(Integer id, PageRequest page){
 		Optional <UserEntity> userOptional = userRepository.findById(id);
 		return jobRepository.findByOwner(userOptional.get(), page);

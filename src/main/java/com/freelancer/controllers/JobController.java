@@ -59,4 +59,13 @@ public class JobController {
 		return pageRequest.getContent();
 	}
 	
+	//encontra por titulo
+	@RequestMapping(value="/findtitulo/{titulo}/{page}/{nitens}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public List<JobEntity> findTitulo(@PathVariable("titulo") String titulo, @PathVariable("page") int page, @PathVariable("nitens") int nitens ){
+		Page<JobEntity> jobPage = jobServ.findByTitulo(titulo, PageRequest.of(page, nitens));
+		return jobPage.getContent();
+	}
+	
+	
 }
