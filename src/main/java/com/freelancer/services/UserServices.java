@@ -33,5 +33,8 @@ public class UserServices {
 		return userRepository.findById(id);		
 	}
 	
+	public Page<UserEntity> findByNome(String nome, PageRequest page){
+		return userRepository.findByNomeIgnoreCaseContaining(nome, page);
+	}
 	
 }

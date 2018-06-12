@@ -25,15 +25,16 @@ public class UserController {
 	@Autowired
 	UserServices userServ;
 	
-	
+	//SAVAR E ATUALIZAR USUARIO
 	@PostMapping
 	@ResponseBody
 	public  UserEntity saveAndUpdate(@RequestBody UserEntity user) {
-		
-		return userServ.saveAndUpdate(user) ;
-		
+		return userServ.saveAndUpdate(user);
 	}
 	
+	
+	
+	//LISTAR TODOS USUARIOS PAGINADOS
 	@GetMapping(value="{page}/{nitens}")
 	@ResponseBody
 	public List<UserEntity> listar(@PathVariable("page")int page, @PathVariable("nitens")int nitens){
@@ -43,7 +44,7 @@ public class UserController {
 		
 	}
 	
-	
+	//BUSACAR USUARIO POR ID
 	@RequestMapping(value="/buscar{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public  Optional<UserEntity> findbyid(@Param("id") Integer id) {	
@@ -51,13 +52,22 @@ public class UserController {
 		return userServ.findbyid(id) ;
 		
 	}
-
+	
+	//DELETAR USUARIO POR ID
 	@RequestMapping(value="/deletar{id}", method= RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public void deleteById(@Param("id") Integer id) {	
 		
 		userServ.delete(id);
 		
+	}
+	
+	//ENCONTRAR TODOS USUARIOS POR NOME 
+	@GetMapping(value="/findname/{nome}/{page}/{nitens}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public List<UserEntity> findByNome(@PathVariable("nome") String nome, @PathVariable("page") int page, @PathVariable("nitens") int nitens){
+		Page<UserEntity> userPage = userServ.findByNome(nome, PageRequest.of(page, nitens) );
+		return userPage.getContent();
 	}
 	
 	

@@ -6,4 +6,5 @@ import com.freelancer.model.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Integer>{
 	Page<UserEntity> findAll(Pageable page);
+	Page<UserEntity> findByNomeIgnoreCaseContaining(String nome, Pageable page);
 }

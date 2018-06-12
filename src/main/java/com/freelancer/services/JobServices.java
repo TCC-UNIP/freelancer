@@ -40,21 +40,24 @@ public class JobServices {
 		return jobRepository.findAll();
 	}
 	
+	//DELETAR BY ID
 	public void deletar(Integer id) {
 		 jobRepository.deleteById(id);;
 	}
 		
-	
+	//ENCONTRAR POR ID
 	public Optional<JobEntity> findOne(Integer id) {
 		
 		return jobRepository.findById(id);
 	}
 	
+	//ENCONTRAR POR TITULO
 	public Page<JobEntity> findByTitulo(String titulo, PageRequest page) {
 		
 		return jobRepository.findByTituloContainingIgnoreCase(titulo, page);
 	}
 	
+	//ENCONTAR TODOS OS JOBS DE UM DETERMINADO USUARIO
 	public Page<JobEntity> findAllUserJobs(Integer id, PageRequest page){
 		Optional <UserEntity> userOptional = userRepository.findById(id);
 		return jobRepository.findByOwner(userOptional.get(), page);
