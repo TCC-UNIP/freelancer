@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import com.freelancer.model.JobEntity;
 import com.freelancer.model.UserEntity;
 import com.freelancer.repository.UserRepository;
 
@@ -36,5 +38,7 @@ public class UserServices {
 	public Page<UserEntity> findByNome(String nome, PageRequest page){
 		return userRepository.findByNomeIgnoreCaseContaining(nome, page);
 	}
+	
+	
 	
 }

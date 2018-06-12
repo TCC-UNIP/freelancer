@@ -67,5 +67,11 @@ public class JobController {
 		return jobPage.getContent();
 	}
 	
+	//CANDIDATAR USUARIO A VAGA
+	@RequestMapping(value="/candidatar/{userid}/{idjob}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public void candidatarUser(@PathVariable("userid") int userId, @PathVariable("idjob") int jobId){
+		jobServ.candidatar(userId, jobId);
+	}	
 	
 }

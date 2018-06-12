@@ -20,19 +20,18 @@ public class JobServices {
 	JobRepository jobRepository;
 	
 	@Autowired
-	UserRepository userRepository;
+	UserServices userServices;
+	
 	
 	public JobEntity saveAndUpdate(JobEntity job, Integer userID) {
-		Optional<UserEntity> userOptional = userRepository.findById(userID);
+		Optional<UserEntity> userOptional = userServices.findbyid(userID);
 		if (userOptional.isPresent()) {
 			UserEntity user= userOptional.get();
 			job.setOwner(user);
 			jobRepository.save(job);
 		}
 		
-		return job;
-		
-		
+		return job;	
 	}
 	
 	//usuario com permissão de administrador buscar todos usuarios
@@ -59,9 +58,27 @@ public class JobServices {
 	
 	//ENCONTAR TODOS OS JOBS DE UM DETERMINADO USUARIO
 	public Page<JobEntity> findAllUserJobs(Integer id, PageRequest page){
-		Optional <UserEntity> userOptional = userRepository.findById(id);
+		Optional <UserEntity> userOptional = userServices.findbyid(id);
 		return jobRepository.findByOwner(userOptional.get(), page);
-		
 	}
+	
+	//Candidatar um usuario a vaga
+		public void candidatar(int userId, int jobId){
+			Optional<UserEntity> userOptional = userServices.findbyid(userId);
+			Optional<JobEntity> jobOptional = jobRepository.findById(jobId);
+			
+			if (jobOptional.isPresent() && userOptional.isPresent()) {
+				JobEntity job = jobOptional.get();
+				UserEntity user = userOptional.get();
+				List<UserEntity> candidatos = job.getCandidatos();
+				List<JobEntity> candidatandoSe = user.getCandidatoAsVagas();
+				candidatos.add(user);
+				job.setCandidatos(candidatos);
+				candidatandoSe.add(job);
+				jobRepository.save(job);
+				userServices.saveAndUpdate(user);
+			}		
+		}
+	
 
 }
