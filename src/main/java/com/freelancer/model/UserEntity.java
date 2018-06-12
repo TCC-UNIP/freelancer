@@ -78,7 +78,7 @@ public class UserEntity  {
 	public void setOfertasVagas(List<JobEntity> ofertasVagas) {
 		this.ofertasVagas = ofertasVagas;
 	}
-
+	@Transient
 	public List<JobEntity> getCandidatoAsVagas() {
 		return candidatoAsVagas;
 	}

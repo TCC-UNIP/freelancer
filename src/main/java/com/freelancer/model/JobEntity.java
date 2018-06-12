@@ -81,7 +81,7 @@ public class JobEntity {
 		this.owner = owner;
 	}
 
-
+	@Transient
 	public List<UserEntity> getCandidatos() {
 		return candidatos;
 	}

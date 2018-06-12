@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.freelancer.model.JobEntity;
 import com.freelancer.model.UserEntity;
 import com.freelancer.services.UserServices;
 
@@ -70,5 +72,13 @@ public class UserController {
 		return userPage.getContent();
 	}
 	
-	
+	@RequestMapping(value="/candidatando{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public List<JobEntity> candidatando(@Param("id") Integer id) {	
+		
+			Optional<UserEntity> userOptioanl = userServ.findbyid(id);
+			UserEntity user = userOptioanl.get();
+			return user.getCandidatoAsVagas();
+		
+	}
 }
