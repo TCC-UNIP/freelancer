@@ -1,8 +1,6 @@
 package com.freelancer.services;
-
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.freelancer.model.JobEntity;
 import com.freelancer.model.UserEntity;
 import com.freelancer.repository.JobRepository;
-import com.freelancer.repository.UserRepository;
 
 @Service
 public class JobServices {
@@ -30,7 +27,6 @@ public class JobServices {
 			job.setOwner(user);
 			jobRepository.save(job);
 		}
-		
 		return job;	
 	}
 	
@@ -63,20 +59,27 @@ public class JobServices {
 	}
 	
 	//Candidatar um usuario a vaga
-		public void candidatar(int userId, int jobId){
+		public void candidatar(int userId, int jobId) throws  Exception{
 			Optional<UserEntity> userOptional = userServices.findbyid(userId);
 			Optional<JobEntity> jobOptional = jobRepository.findById(jobId);
 			
+
 			if (jobOptional.isPresent() && userOptional.isPresent()) {
 				JobEntity job = jobOptional.get();
 				UserEntity user = userOptional.get();
-				List<UserEntity> candidatos = job.getCandidatos();
-				List<JobEntity> candidatandoSe = user.getCandidatoAsVagas();
-				candidatos.add(user);
-				job.setCandidatos(candidatos);
-				candidatandoSe.add(job);
-				jobRepository.save(job);
-				userServices.saveAndUpdate(user);
+				
+				if (job.getOwner() != user) {
+					List<UserEntity> candidatos = job.getCandidatos();
+					List<JobEntity> candidatandoSe = user.getCandidatoAsVagas();
+					candidatos.add(user);
+					job.setCandidatos(candidatos);
+					candidatandoSe.add(job);
+					jobRepository.save(job);
+					userServices.saveAndUpdate(user);
+				}else {
+					throw new Exception();
+					
+				}
 			}		
 		}
 	

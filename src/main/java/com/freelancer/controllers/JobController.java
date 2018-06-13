@@ -1,5 +1,5 @@
 package com.freelancer.controllers;
-import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,8 +13,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+
 import com.freelancer.model.JobEntity;
 import com.freelancer.services.JobServices;
+
 
 
 @Controller
@@ -70,7 +73,7 @@ public class JobController {
 	//CANDIDATAR USUARIO A VAGA
 	@RequestMapping(value="/candidatar/{userid}/{idjob}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public void candidatarUser(@PathVariable("userid") int userId, @PathVariable("idjob") int jobId){
+	public void candidatarUser(@PathVariable("userid") int userId, @PathVariable("idjob") int jobId) throws  Exception{
 		jobServ.candidatar(userId, jobId);
 	}	
 	
