@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -23,21 +26,30 @@ public class UserEntity  {
 	private Integer id;
 	
 	@Column(length=20, nullable=false, unique=true)
+	@NotEmpty
 	private String nickname;
 	
 	@Column(length=50, nullable=false)
 	private String nome;
 	
+	@Column(nullable=false)
+	@NotEmpty
+	private String password;
+	
 	private Date datanascimento;
 	
+	private boolean admin;
+	
+	@JsonIgnore
     @OneToMany(targetEntity= JobEntity.class, mappedBy = "owner" )
 	private List<JobEntity> ofertasVagas;
     
     @ManyToMany()
     @JoinTable(name="candidatos_vagas", joinColumns = @JoinColumn(name= "user_id"),inverseJoinColumns = @JoinColumn(name="job_id"))
-    
+    @JsonIgnore
     private List<JobEntity> candidatoAsVagas;
 
+    @Transient
 	public Integer getId() {
 		return id;
 	}
@@ -62,6 +74,15 @@ public class UserEntity  {
 		this.nome = nome;
 	}
 
+	@Transient 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public Date getDatanascimento() {
 		return datanascimento;
 	}
@@ -70,7 +91,6 @@ public class UserEntity  {
 		this.datanascimento = datanascimento;
 	}
 
-	@Transient
 	public List<JobEntity> getOfertasVagas() {
 		return ofertasVagas;
 	}
@@ -78,13 +98,21 @@ public class UserEntity  {
 	public void setOfertasVagas(List<JobEntity> ofertasVagas) {
 		this.ofertasVagas = ofertasVagas;
 	}
-	@Transient
+
 	public List<JobEntity> getCandidatoAsVagas() {
 		return candidatoAsVagas;
 	}
 
 	public void setCandidatoAsVagas(List<JobEntity> candidatoAsVagas) {
 		this.candidatoAsVagas = candidatoAsVagas;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
     

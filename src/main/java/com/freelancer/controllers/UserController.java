@@ -6,10 +6,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,22 +22,31 @@ import com.freelancer.model.UserEntity;
 import com.freelancer.services.UserServices;
 
 @Controller
-@RequestMapping(value="/user")
+@RequestMapping()
 public class UserController {
 	
 	@Autowired
 	UserServices userServ;
 	
-	//SAVAR E ATUALIZAR USUARIO
-	@PostMapping
+	//SAVAR USUARIO
+	@PutMapping(value="/protected/user")
 	@ResponseBody
-	public UserEntity saveAndUpdate(@RequestBody UserEntity user) {
-		return userServ.saveAndUpdate(user);
+	public UserEntity save(@RequestBody UserEntity user) {
+		user.setPassword(userServ.encpritografarBcripty(user.getPassword()));
+		return userServ.save(user);
+	}
+	
+	//SAVAR USUARIO
+	@PutMapping(value="/protected/user/Update")
+	@ResponseBody
+	public UserEntity Update(@RequestBody UserEntity user) {
+		user.setPassword(userServ.encpritografarBcripty(user.getPassword()));
+		return userServ.update(user);
 	}
 	
 	
 	//LISTAR TODOS USUARIOS PAGINADOS
-	@GetMapping(value="{page}/{nitens}")
+	@GetMapping(value="admin/user/{page}/{nitens}")
 	@ResponseBody
 	public List<UserEntity> listar(@PathVariable("page")int page, @PathVariable("nitens")int nitens){
 		Page<UserEntity> pageRequest = userServ.listAllUsers(PageRequest.of(page, nitens));
@@ -44,7 +56,7 @@ public class UserController {
 	}
 	
 	//BUSACAR USUARIO POR ID
-	@RequestMapping(value="/buscar{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="admin/user/buscar{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public  Optional<UserEntity> findbyid(@Param("id") Integer id) {	
 		
@@ -53,7 +65,7 @@ public class UserController {
 	}
 	
 	//DELETAR USUARIO POR ID
-	@RequestMapping(value="/deletar{id}", method= RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@DeleteMapping(value="admin/user{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public void deleteById(@Param("id") Integer id) {	
 		
@@ -62,14 +74,15 @@ public class UserController {
 	}
 	
 	//ENCONTRAR TODOS USUARIOS POR NOME 
-	@GetMapping(value="/findname/{nome}/{page}/{nitens}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value="protected/user/findname/{nome}/{page}/{nitens}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public List<UserEntity> findByNome(@PathVariable("nome") String nome, @PathVariable("page") int page, @PathVariable("nitens") int nitens){
 		Page<UserEntity> userPage = userServ.findByNome(nome, PageRequest.of(page, nitens) );
 		return userPage.getContent();
 	}
 	
-	@RequestMapping(value="/candidatando{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	//encontrar os jobs em que um usuario esta se candidatando
+	@RequestMapping(value="protected/user/candidatando{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public List<JobEntity> candidatando(@Param("id") Integer id) {	
 		

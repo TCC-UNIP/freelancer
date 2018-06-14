@@ -21,41 +21,41 @@ import com.freelancer.services.JobServices;
 
 
 @Controller
-@RequestMapping(value="/job")
+@RequestMapping
 public class JobController {
 	
 	@Autowired
 	JobServices jobServ;
 
 	//salva passando o id de um usuario
-	@RequestMapping(value="/save{id}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="protected/job/save{id}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public  JobEntity saveAndUpdate(@RequestBody JobEntity job, @Param("id") Integer id) {
 		return jobServ.saveAndUpdate(job,id);		
 	}
 	
-	@GetMapping
+	@GetMapping()
 	@ResponseBody
 	public List<JobEntity> listaTodosJobs(){
 		return jobServ.listarServicos();
 	}
 	
 	//encontra por id
-	@RequestMapping(value="/find{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="admin/job/find{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public Optional<JobEntity> findOne(@Param("id") Integer id){
-		return jobServ.findOne(id);
+		return jobServ.findById(id);
 	}
 	
 	//deleta por id
-	@RequestMapping(value="/deletar{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="admin/job/deletar{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public void deletar(@Param("id") Integer id){
 		 jobServ.deletar(id);
 	}
 	
 	//busca todos os jobs relacionada de um usuario
-	@RequestMapping(value="/all/{id}/{page}/{nitens}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="protected/job/all/{id}/{page}/{nitens}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public List<JobEntity> allUserJobs(@PathVariable("id") Integer id,@PathVariable("page") int page, @PathVariable("nitens") int nitens){
 		Page<JobEntity> pageRequest = jobServ.findAllUserJobs(id, PageRequest.of(page, nitens));
@@ -63,7 +63,7 @@ public class JobController {
 	}
 	
 	//encontra por titulo
-	@RequestMapping(value="/findtitulo/{titulo}/{page}/{nitens}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="job/findtitulo/{titulo}/{page}/{nitens}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public List<JobEntity> findTitulo(@PathVariable("titulo") String titulo, @PathVariable("page") int page, @PathVariable("nitens") int nitens ){
 		Page<JobEntity> jobPage = jobServ.findByTitulo(titulo, PageRequest.of(page, nitens));
@@ -71,7 +71,7 @@ public class JobController {
 	}
 	
 	//CANDIDATAR USUARIO A VAGA
-	@RequestMapping(value="/candidatar/{userid}/{idjob}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="protected/job/candidatar/{userid}/{idjob}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public void candidatarUser(@PathVariable("userid") int userId, @PathVariable("idjob") int jobId) throws  Exception{
 		jobServ.candidatar(userId, jobId);

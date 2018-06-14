@@ -41,7 +41,7 @@ public class JobServices {
 	}
 		
 	//ENCONTRAR POR ID
-	public Optional<JobEntity> findOne(Integer id) {
+	public Optional<JobEntity> findById(Integer id) {
 		
 		return jobRepository.findById(id);
 	}
@@ -75,7 +75,7 @@ public class JobServices {
 					job.setCandidatos(candidatos);
 					candidatandoSe.add(job);
 					jobRepository.save(job);
-					userServices.saveAndUpdate(user);
+					userServices.save(user);
 				}else {
 					throw new Exception();
 					
