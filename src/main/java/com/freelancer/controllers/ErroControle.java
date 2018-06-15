@@ -9,9 +9,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.freelancer.tratamentoErros.Resposta;
 
+import javassist.NotFoundException;
+
 @ControllerAdvice
 public class ErroControle {
+	//CONTROLA TODAS AS EXCPTIONS
 	
+	
+	//CONTROLA AS EXCEPTIONS NÇÃO TRATADAS
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Resposta> exeptionGenerica(Exception e) throws Exception{
 		Resposta resposta = new Resposta();
@@ -21,6 +26,7 @@ public class ErroControle {
 		
 	}
 	
+	//CONTROLA EXCEPTIONS DO TIPO DataIntegrityViolationException
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<Resposta> exeptionGenerica(DataIntegrityViolationException e) throws Exception{
 		Resposta resposta = new Resposta();
@@ -29,6 +35,7 @@ public class ErroControle {
 		return new ResponseEntity<Resposta> (resposta, HttpStatus.INTERNAL_SERVER_ERROR);	
 	}
 	
+	//CONTROLA EXCEPTIONS DO TIPO EmptyResultDataAccessException
 	@ExceptionHandler(EmptyResultDataAccessException.class)
 	public ResponseEntity<Resposta> registroInexistente(EmptyResultDataAccessException e) throws  Exception{
 		Resposta resposta = new Resposta();
@@ -36,11 +43,11 @@ public class ErroControle {
 		return new ResponseEntity<Resposta> (resposta, HttpStatus.BAD_REQUEST);
 	}
 	
-	
+	////CONTROLA EXCEPTIONS DO TIPO HttpRequestMethodNotSupportedException
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	public ResponseEntity<Resposta> metodoRequisicaoNaoSuportado(HttpRequestMethodNotSupportedException e) throws  Exception{
 		Resposta resposta = new Resposta();
 		resposta.setDescricao("Metodo de requisição não suportado");
 		return new ResponseEntity<Resposta> (resposta, HttpStatus.BAD_REQUEST);
-	}	
+	}		
 }

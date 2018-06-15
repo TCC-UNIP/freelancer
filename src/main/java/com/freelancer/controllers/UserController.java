@@ -26,6 +26,13 @@ public class UserController {
 	@Autowired
 	UserServices userServ;
 	
+	//PAGINA INDEX DE BOAS VINDAS
+	@RequestMapping(value="/")
+	@ResponseBody
+	public String index() {
+		return "<center><H1 style='color:green; padding-top: 7%;'>Bem vindo a API</H1><p>Serviços para multiplataformas</br>Gestão de vagas e contratos</p></center>";
+	}
+	
 	//SAVAR USUARIO
 	@PutMapping(value="/user")
 	@ResponseBody
@@ -34,8 +41,8 @@ public class UserController {
 		return userServ.save(user);
 	}
 	
-	//SAVAR USUARIO
-	@PutMapping(value="/protected/user/Update")
+	//ATUALIZA USUARIO
+	@PutMapping(value="/protected/user/update")
 	@ResponseBody
 	public UserEntity Update(@RequestBody UserEntity user) {
 		user.setPassword(userServ.encpritografarBcripty(user.getPassword()));

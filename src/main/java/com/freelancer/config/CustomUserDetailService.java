@@ -16,7 +16,7 @@ import com.freelancer.repository.UserRepository;
 
 @Component
 public class CustomUserDetailService implements UserDetailsService{
-
+	//SPRING SECURITY GERENCIANDO USUARIO
 	
 	private final UserRepository userR;
 	
@@ -31,6 +31,7 @@ public class CustomUserDetailService implements UserDetailsService{
 		
 		List<GrantedAuthority> authoritListAdmin = AuthorityUtils.createAuthorityList("ROLE_USER","ROLE_ADMIN");
 		List<GrantedAuthority> authoritListUser = AuthorityUtils.createAuthorityList("ROLE_USER");
+		//RETURNA UMA LISTA E ACESSA AO BANCO, TODOS OS REGISTRO DE USUARIOS COM VARIAVEL BOOLEAN ADMIN TRUE E COLOCADO COMO ADMIN, AOS OUTROS RECEBE PERFIL USER
 		return new org.springframework.security.core.userdetails.User(user.getNickname(),user.getPassword(), user.isAdmin() ? authoritListAdmin : authoritListUser);
 		
 		

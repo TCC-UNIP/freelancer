@@ -19,7 +19,7 @@ public class JobServices {
 	@Autowired
 	UserServices userServices;
 	
-	
+	//SAVA UM SERVIÇO A UM USUARIO,
 	public JobEntity saveAndUpdate(JobEntity job, Integer userID) {
 		Optional<UserEntity> userOptional = userServices.findbyid(userID);
 		if (userOptional.isPresent()) {

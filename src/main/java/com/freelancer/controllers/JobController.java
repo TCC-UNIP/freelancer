@@ -27,27 +27,28 @@ public class JobController {
 	@Autowired
 	JobServices jobServ;
 
-	//salva passando o id de um usuario
+	//salva um serviço passando o id de um usuario
 	@RequestMapping(value="protected/job/save{id}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public  JobEntity saveAndUpdate(@RequestBody JobEntity job, @Param("id") Integer id) {
 		return jobServ.saveAndUpdate(job,id);		
 	}
 	
+	//lista todos os serviços 
 	@GetMapping()
 	@ResponseBody
 	public List<JobEntity> listaTodosJobs(){
 		return jobServ.listarServicos();
 	}
 	
-	//encontra por id
+	//ENCONTRA SERVIÇO PELO ID
 	@RequestMapping(value="admin/job/find{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public Optional<JobEntity> findOne(@Param("id") Integer id){
 		return jobServ.findById(id);
 	}
 	
-	//deleta por id
+	//DELETA SERVIÇO PASSANDO UM ID
 	@RequestMapping(value="admin/job/deletar{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public void deletar(@Param("id") Integer id){

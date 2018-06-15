@@ -16,14 +16,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("*/user/*").permitAll();
+		//PERMITE URLS PARA USUARIO COM PADRAO /USER
+		http.authorizeRequests().antMatchers("*/user").permitAll();
+		//BLOQUEIA TODOS AS URLs NÃO MAPEADAS
 		http.authorizeRequests().anyRequest().authenticated();
+		//MAPEA URLS COMO PADRAO /ADMIN E / PROTECTED PARA SEREM ACESSADAS APENAS COM AUTORIZAÇÃO DE USER OU ADMIN
 		http.authorizeRequests().antMatchers("*/admim/*").hasRole("ADMIN").antMatchers("*/protected/*").hasRole("USER").and().httpBasic().and().csrf().disable();
 	}
 	
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		//REALIZA A CRIPTOGRAÇÃO DA SENHA DOS USUARIOS PARA AUTENTICAR
 		auth.userDetailsService(customUserDatailService).passwordEncoder(new BCryptPasswordEncoder());
 	}
 	
