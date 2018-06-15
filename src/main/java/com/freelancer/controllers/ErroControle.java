@@ -4,6 +4,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.freelancer.tratamentoErros.Resposta;
@@ -35,4 +36,11 @@ public class ErroControle {
 		return new ResponseEntity<Resposta> (resposta, HttpStatus.BAD_REQUEST);
 	}
 	
+	
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	public ResponseEntity<Resposta> metodoRequisicaoNaoSuportado(HttpRequestMethodNotSupportedException e) throws  Exception{
+		Resposta resposta = new Resposta();
+		resposta.setDescricao("Metodo de requisição não suportado");
+		return new ResponseEntity<Resposta> (resposta, HttpStatus.BAD_REQUEST);
+	}	
 }
