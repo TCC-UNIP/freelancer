@@ -74,10 +74,11 @@ public class UserEntity  {
 		this.nome = nome;
 	}
 
-	@Transient 
+
 	public String getPassword() {
 		return password;
 	}
+
 
 	public void setPassword(String password) {
 		this.password = password;

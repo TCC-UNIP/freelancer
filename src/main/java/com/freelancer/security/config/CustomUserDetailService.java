@@ -1,4 +1,4 @@
-package com.freelancer.config;
+package com.freelancer.security.config;
 
 import java.util.List;
 
@@ -33,9 +33,7 @@ public class CustomUserDetailService implements UserDetailsService{
 		List<GrantedAuthority> authoritListUser = AuthorityUtils.createAuthorityList("ROLE_USER");
 		//RETURNA UMA LISTA E ACESSA AO BANCO, TODOS OS REGISTRO DE USUARIOS COM VARIAVEL BOOLEAN ADMIN TRUE E COLOCADO COMO ADMIN, AOS OUTROS RECEBE PERFIL USER
 		return new org.springframework.security.core.userdetails.User(user.getNickname(),user.getPassword(), user.isAdmin() ? authoritListAdmin : authoritListUser);
-		
-		
-		
 	}
+
 
 }
