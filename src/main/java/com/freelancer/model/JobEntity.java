@@ -11,11 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-
-
 
 @Entity
 public class JobEntity {
@@ -41,8 +37,21 @@ public class JobEntity {
 	
 	private String categoria;
 	
+	
+	@Column(length=50)
 	private String proprietarioNome;
 	
+	@Column(length=50)
+	private String localizacao;
+	
+	public String getLocalizacao() {
+		return localizacao;
+	}
+
+	public void setLocalizacao(String localizacao) {
+		this.localizacao = localizacao;
+	}
+
 	public String getCategoria() {
 		return categoria;
 	}

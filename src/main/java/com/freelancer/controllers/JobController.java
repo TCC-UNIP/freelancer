@@ -107,10 +107,6 @@ public class JobController {
 			response.setStatus(403);
 			return null;
 		}
-		
-		
-		
-
 	}
 	
 }
