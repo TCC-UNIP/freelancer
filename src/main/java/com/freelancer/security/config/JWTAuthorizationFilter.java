@@ -18,7 +18,7 @@ import com.freelancer.model.UserEntity;
 import io.jsonwebtoken.Jwts;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
-	public static final String SECRET = "MySecret";
+	public static final String SECRET = "sikeodk";
 	public static final String HEADER_STRING = "Authorization";
 	public static final String TOKEN_PREFIX = "Bearer";
 	private final CustomUserDetailService customUserDetailService;

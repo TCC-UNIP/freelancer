@@ -28,7 +28,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	// EXPIRATION_TIME = 10 dias
 		public static final long EXPIRATION_TIME = 860_000_000L;
-		public static final String SECRET = "MySecret";
+		public static final String SECRET = "sikeodk";
 		public static final String TOKEN_PREFIX = "Bearer";
 		public static final String HEADER_STRING = "Authorization";
 

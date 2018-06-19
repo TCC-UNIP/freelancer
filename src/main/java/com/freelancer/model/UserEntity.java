@@ -2,8 +2,6 @@ package com.freelancer.model;
 import java.beans.Transient;
 import java.sql.Date;
 import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,8 +13,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 public class UserEntity  {
@@ -32,8 +33,10 @@ public class UserEntity  {
 	@Column(length=50, nullable=false)
 	private String nome;
 	
+
 	@Column(nullable=false)
 	@NotEmpty
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	
 	private Date datanascimento;
@@ -74,12 +77,10 @@ public class UserEntity  {
 		this.nome = nome;
 	}
 
-
 	public String getPassword() {
 		return password;
 	}
-
-
+	
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -114,7 +115,5 @@ public class UserEntity  {
 
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
-	}
-
-    
+	}    
 }
