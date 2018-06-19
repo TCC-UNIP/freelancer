@@ -60,7 +60,7 @@ public class UserServices {
 	//METODO DE ENCRIPTO PARA SENHAS
 	public String encpritografarBcripty(String password) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		return passwordEncoder.encode("password");	
+		return passwordEncoder.encode(password);	
 	}
 	
 	
