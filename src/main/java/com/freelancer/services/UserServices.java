@@ -5,8 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.freelancer.model.JobEntity;
 import com.freelancer.model.UserEntity;
 import com.freelancer.repository.UserRepository;
 

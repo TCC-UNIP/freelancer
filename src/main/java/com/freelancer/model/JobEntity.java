@@ -28,7 +28,7 @@ public class JobEntity {
 	private String titulo;
 	
 	@Column(nullable=false)
-	private int salario;
+	private long salario;
 	
 	@ManyToOne
 	@JoinColumn(name="owner_id")
@@ -38,10 +38,19 @@ public class JobEntity {
 	@JsonIgnore
 	@ManyToMany(mappedBy = "candidatoAsVagas",fetch = FetchType.LAZY,cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<UserEntity> candidatos;
-
+	
+	private String categoria;
+	
 	private String proprietarioNome;
 	
-	
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+
 
 	public String getProprietarioNome() {
 		return proprietarioNome;
@@ -67,11 +76,11 @@ public class JobEntity {
 		this.titulo = titulo;
 	}
 
-	public int getSalario() {
+	public long getSalario() {
 		return salario;
 	}
 
-	public void setSalario(int salario) {
+	public void setSalario(long salario) {
 		this.salario = salario;
 	}
 

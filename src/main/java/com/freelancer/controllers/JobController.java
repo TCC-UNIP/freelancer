@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import com.freelancer.model.JobEntity;
+import com.freelancer.model.UserEntity;
 import com.freelancer.services.JobServices;
 
 @Controller
@@ -89,6 +90,17 @@ public class JobController {
 			response.setStatus(403);
 		}
 		
-	}	
+	}
+	
+	//LISTAR CANDIDATOS
+	@RequestMapping(value="protected/job/candidatos/{jobid}/{page}/{nitens}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public List<UserEntity> listarCandidatos(@PathVariable("jobid") Integer jobid, @PathVariable("page") Integer page, @PathVariable("nitens") Integer nitens){
+		
+		Optional<JobEntity> jobOptional = jobServ.findById(jobid);
+		JobEntity job = jobOptional.get();
+		 return job.getCandidatos();
+
+	}
 	
 }

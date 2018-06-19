@@ -2,10 +2,10 @@ package com.freelancer.services;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import com.freelancer.model.JobEntity;
 import com.freelancer.model.UserEntity;
 import com.freelancer.repository.JobRepository;
@@ -66,12 +66,16 @@ public class JobServices {
 			
 				if (job.getOwner() != user) {
 					List<UserEntity> candidatos = job.getCandidatos();
+					if (candidatos.contains(user)) {
+						throw new DataIntegrityViolationException("Usuario ja existe");
+					}else {
 					List<JobEntity> candidatandoSe = user.getCandidatoAsVagas();
 					candidatos.add(user);
 					job.setCandidatos(candidatos);
 					candidatandoSe.add(job);
 					jobRepository.save(job);
 					userServices.save(user);
+					}
 				}else {
 					throw new Exception();
 					
