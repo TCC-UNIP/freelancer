@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import com.freelancer.model.JobEntity;
@@ -27,13 +30,13 @@ public class JobController {
 	@Autowired
 	JobServices jobServ;
 
-	//salva um serviço passando o nickname de um usuario
-	@RequestMapping(value="protected/job/save{nickname}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	//salva um serviço passando o email de um usuario
+	@RequestMapping(value="protected/job/save{email}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public  JobEntity saveAndUpdate(@RequestBody JobEntity job, @Param("nickname") String nickname, Authentication auth, HttpServletResponse response) {
-		if (auth.getName().equals(nickname)) {
+	public  JobEntity saveAndUpdate(@RequestBody JobEntity job, @Param("email") String email, Authentication auth, HttpServletResponse response) {
+		if (auth.getName().equals(email)) {
 			response.setStatus(201);
-			return jobServ.saveAndUpdate(job,nickname);
+			return jobServ.saveAndUpdate(job,email);
 		}else {
 			response.setStatus(403);
 			return null;
@@ -64,10 +67,10 @@ public class JobController {
 	}
 	
 	//busca todos os jobs a qual um usuario e dono
-	@RequestMapping(value="protected/job/all/{nickname}/{page}/{nitens}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="protected/job/all/{email}/{page}/{nitens}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public List<JobEntity> allUserJobs(@PathVariable("nickname") String nickname,@PathVariable("page") int page, @PathVariable("nitens") int nitens){
-		Page<JobEntity> pageRequest = jobServ.findAllUserJobs(nickname, PageRequest.of(page, nitens));
+	public List<JobEntity> allUserJobs(@PathVariable("email") String email,@PathVariable("page") int page, @PathVariable("nitens") int nitens){
+		Page<JobEntity> pageRequest = jobServ.findAllUserJobs(email, PageRequest.of(page, nitens));
 		return pageRequest.getContent();
 	}
 	
@@ -80,12 +83,12 @@ public class JobController {
 	}
 	
 	//CANDIDATAR USUARIO A VAGA
-	@RequestMapping(value="protected/job/candidatar/{nickname}/{idjob}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="protected/job/candidatar/{email}/{idjob}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public void candidatarUser(@PathVariable("nickname") String nickname, @PathVariable("idjob") int jobId, Authentication auth, HttpServletResponse response) throws  Exception{
-		if (auth.getName().equals(nickname)) {
+	public void candidatarUser(@PathVariable("email") String email, @PathVariable("idjob") int jobId, Authentication auth, HttpServletResponse response) throws  Exception{
+		if (auth.getName().equals(email)) {
 			response.setStatus(200);
-			jobServ.candidatar(nickname, jobId);
+			jobServ.candidatar(email, jobId);
 		}else {
 			response.setStatus(403);
 		}
@@ -95,11 +98,18 @@ public class JobController {
 	//LISTAR CANDIDATOS
 	@RequestMapping(value="protected/job/candidatos/{jobid}/{page}/{nitens}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public List<UserEntity> listarCandidatos(@PathVariable("jobid") Integer jobid, @PathVariable("page") Integer page, @PathVariable("nitens") Integer nitens){
-		
+	public List<UserEntity> listarCandidatos(@PathVariable("jobid") Integer jobid, @PathVariable("page") Integer page, @PathVariable("nitens") Integer nitens, Authentication auth, HttpServletResponse response){
 		Optional<JobEntity> jobOptional = jobServ.findById(jobid);
 		JobEntity job = jobOptional.get();
-		 return job.getCandidatos();
+		if (auth.getName().equals(job.getOwner().getEmail())) {
+			 return job.getCandidatos();
+		}else {
+			response.setStatus(403);
+			return null;
+		}
+		
+		
+		
 
 	}
 	

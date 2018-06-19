@@ -20,7 +20,7 @@ public class UserServices {
 	}
 	//ATUALIZAR USUARIO
 	public UserEntity update(UserEntity user) {
-		UserEntity userEntity = userRepository.findByNickname(user.getNickname());
+		UserEntity userEntity = userRepository.findByEmail(user.getEmail());
 		if (userEntity.getDatanascimento()!=null) {
 			userEntity.setDatanascimento((user.getDatanascimento()));
 		}
@@ -36,8 +36,8 @@ public class UserServices {
 	
 	
 	//ENCONTRAR USUARIO POR NICKNAME
-	public UserEntity findByNickName(String nickname) {
-		return userRepository.findByNickname(nickname);
+	public UserEntity findByEmail(String email) {
+		return userRepository.findByEmail(email);
 	}
 	
 	//DELETAR USUARIO

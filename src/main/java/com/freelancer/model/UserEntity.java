@@ -24,7 +24,7 @@ public class UserEntity  {
 	
 	@Column(length=20, nullable=false, unique=true)
 	@NotEmpty
-	private String nickname;
+	private String email;
 	
 	@Column(length=50, nullable=false)
 	private String nome;
@@ -57,12 +57,12 @@ public class UserEntity  {
 		this.id = id;
 	}
 
-	public String getNickname() {
-		return nickname;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setemail(String email) {
+		this.email = email;
 	}
 
 	public String getNome() {

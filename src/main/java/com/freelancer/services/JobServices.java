@@ -20,8 +20,8 @@ public class JobServices {
 	UserServices userServices;
 	
 	//SAVA UM SERVIÇO A UM USUARIO,
-	public JobEntity saveAndUpdate(JobEntity job, String nickname) {
-			UserEntity user = userServices.findByNickName(nickname);
+	public JobEntity saveAndUpdate(JobEntity job, String email) {
+			UserEntity user = userServices.findByEmail(email);
 			job.setOwner(user);
 			job.setProprietarioNome(user.getNome());
 			jobRepository.save(job);
@@ -51,14 +51,14 @@ public class JobServices {
 	}
 	
 	//ENCONTAR TODOS OS JOBS DE UM DETERMINADO USUARIO
-	public Page<JobEntity> findAllUserJobs(String nickname, PageRequest page){
-		UserEntity user = userServices.findByNickName(nickname);
+	public Page<JobEntity> findAllUserJobs(String email, PageRequest page){
+		UserEntity user = userServices.findByEmail(email);
 		return jobRepository.findByOwner(user, page);
 	}
 	
 	//Candidatar um usuario a vaga
-		public void candidatar(String nickname, int jobId) throws  Exception{
-			UserEntity user = userServices.findByNickName(nickname);
+		public void candidatar(String email, int jobId) throws  Exception{
+			UserEntity user = userServices.findByEmail(email);
 			Optional<JobEntity> jobOptional = jobRepository.findById(jobId);
 			
 			if (jobOptional.isPresent() && (user !=null)) {

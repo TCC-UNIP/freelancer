@@ -45,8 +45,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		String token = request.getHeader(HEADER_STRING);
 		if (token == null) return null;
 
-		String nickname = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, " " )).getBody().getSubject();
-		UserDetails userDetails = customUserDetailService.loadUserByUsername(nickname);
-		return nickname != null ? new UsernamePasswordAuthenticationToken(userDetails, null,userDetails.getAuthorities()) : null;
+		String email = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token.replace(TOKEN_PREFIX, " " )).getBody().getSubject();
+		UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
+		return email != null ? new UsernamePasswordAuthenticationToken(userDetails, null,userDetails.getAuthorities()) : null;
 	}
 }

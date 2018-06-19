@@ -26,13 +26,13 @@ public class CustomUserDetailService implements UserDetailsService{
 	}
 	
 	@Override
-	public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
-		UserEntity user = userR.findByNickname(nickname);
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		UserEntity user = userR.findByEmail(email);
 		
 		List<GrantedAuthority> authoritListAdmin = AuthorityUtils.createAuthorityList("ROLE_USER","ROLE_ADMIN");
 		List<GrantedAuthority> authoritListUser = AuthorityUtils.createAuthorityList("ROLE_USER");
 		//RETURNA UMA LISTA E ACESSA AO BANCO, TODOS OS REGISTRO DE USUARIOS COM VARIAVEL BOOLEAN ADMIN TRUE E COLOCADO COMO ADMIN, AOS OUTROS RECEBE PERFIL USER
-		return new org.springframework.security.core.userdetails.User(user.getNickname(),user.getPassword(), user.isAdmin() ? authoritListAdmin : authoritListUser);
+		return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(), user.isAdmin() ? authoritListAdmin : authoritListUser);
 	}
 
 

@@ -44,7 +44,7 @@ public class UserController {
 		response.setStatus(201);
 	}
 	
-	//ATUALIZA USUARIO obs nesse metodo não é possivel alterar nick name, necessario implementar alterações para que o usuario possa passar o nickname novo e antigo.
+	//ATUALIZA USUARIO obs nesse metodo não é possivel alterar nick name, necessario implementar alterações para que o usuario possa passar o email novo e antigo.
 	@PutMapping(value="/protected/user/update")
 	@ResponseBody
 	public void Update(@RequestBody UserEntity user, HttpServletResponse response, Authentication auth, HttpServletResponse reponse) {
@@ -96,13 +96,13 @@ public class UserController {
 	}
 	
 	//encontrar os jobs em que um usuario esta se candidatando
-	@RequestMapping(value="protected/user/candidatando{nickname}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="protected/user/candidatando{email}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public List<JobEntity> candidatando(@Param("nickname") String nickname, Authentication auth, HttpServletResponse response) {	
+	public List<JobEntity> candidatando(@Param("email") String email, Authentication auth, HttpServletResponse response) {	
 		
-			UserEntity user = userServ.findByNickName(nickname);
+			UserEntity user = userServ.findByEmail(email);
 			
-			if ( auth.getName().equals(user.getNickname())) {
+			if ( auth.getName().equals(user.getEmail())) {
 				
 				return user.getCandidatoAsVagas();
 			}else{
