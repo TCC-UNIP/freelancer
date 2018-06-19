@@ -37,6 +37,11 @@ public class UserServices {
 	}
 	
 	
+	//ENCONTRAR USUARIO POR NICKNAME
+	public UserEntity findByNickName(String nickname) {
+		return userRepository.findByNickname(nickname);
+	}
+	
 	//DELETAR USUARIO
 	public void delete(Integer id) {
 		userRepository.deleteById(id);

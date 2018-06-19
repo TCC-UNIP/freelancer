@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.freelancer.tratamentoErros.Resposta;
 
+import io.jsonwebtoken.SignatureException;
 import javassist.NotFoundException;
 
 @ControllerAdvice

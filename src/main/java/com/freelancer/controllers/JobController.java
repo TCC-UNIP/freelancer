@@ -8,17 +8,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-
 import com.freelancer.model.JobEntity;
 import com.freelancer.services.JobServices;
-
-
 
 @Controller
 @RequestMapping
@@ -27,15 +26,23 @@ public class JobController {
 	@Autowired
 	JobServices jobServ;
 
-	//salva um serviço passando o id de um usuario
-	@RequestMapping(value="protected/job/save{id}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	//salva um serviço passando o nickname de um usuario
+	@RequestMapping(value="protected/job/save{nickname}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public  JobEntity saveAndUpdate(@RequestBody JobEntity job, @Param("id") Integer id) {
-		return jobServ.saveAndUpdate(job,id);		
+	public  JobEntity saveAndUpdate(@RequestBody JobEntity job, @Param("nickname") String nickname, Authentication auth, HttpServletResponse response) {
+		if (auth.getName().equals(nickname)) {
+			response.setStatus(201);
+			return jobServ.saveAndUpdate(job,nickname);
+		}else {
+			response.setStatus(403);
+			return null;
+		}
+		
+				
 	}
 	
 	//lista todos os serviços 
-	@GetMapping()
+	@GetMapping(value= "/job")
 	@ResponseBody
 	public List<JobEntity> listaTodosJobs(){
 		return jobServ.listarServicos();
@@ -55,11 +62,11 @@ public class JobController {
 		 jobServ.deletar(id);
 	}
 	
-	//busca todos os jobs relacionada de um usuario
-	@RequestMapping(value="protected/job/all/{id}/{page}/{nitens}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	//busca todos os jobs a qual um usuario e dono
+	@RequestMapping(value="protected/job/all/{nickname}/{page}/{nitens}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public List<JobEntity> allUserJobs(@PathVariable("id") Integer id,@PathVariable("page") int page, @PathVariable("nitens") int nitens){
-		Page<JobEntity> pageRequest = jobServ.findAllUserJobs(id, PageRequest.of(page, nitens));
+	public List<JobEntity> allUserJobs(@PathVariable("nickname") String nickname,@PathVariable("page") int page, @PathVariable("nitens") int nitens){
+		Page<JobEntity> pageRequest = jobServ.findAllUserJobs(nickname, PageRequest.of(page, nitens));
 		return pageRequest.getContent();
 	}
 	
@@ -72,10 +79,16 @@ public class JobController {
 	}
 	
 	//CANDIDATAR USUARIO A VAGA
-	@RequestMapping(value="protected/job/candidatar/{userid}/{idjob}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="protected/job/candidatar/{nickname}/{idjob}", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public void candidatarUser(@PathVariable("userid") int userId, @PathVariable("idjob") int jobId) throws  Exception{
-		jobServ.candidatar(userId, jobId);
+	public void candidatarUser(@PathVariable("nickname") String nickname, @PathVariable("idjob") int jobId, Authentication auth, HttpServletResponse response) throws  Exception{
+		if (auth.getName().equals(nickname)) {
+			response.setStatus(200);
+			jobServ.candidatar(nickname, jobId);
+		}else {
+			response.setStatus(403);
+		}
+		
 	}	
 	
 }

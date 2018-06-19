@@ -20,14 +20,12 @@ public class JobServices {
 	UserServices userServices;
 	
 	//SAVA UM SERVIÇO A UM USUARIO,
-	public JobEntity saveAndUpdate(JobEntity job, Integer userID) {
-		Optional<UserEntity> userOptional = userServices.findbyid(userID);
-		if (userOptional.isPresent()) {
-			UserEntity user= userOptional.get();
+	public JobEntity saveAndUpdate(JobEntity job, String nickname) {
+			UserEntity user = userServices.findByNickName(nickname);
 			job.setOwner(user);
+			job.setProprietarioNome(user.getNome());
 			jobRepository.save(job);
-		}
-		return job;	
+			return job;	
 	}
 	
 	//usuario com permissão de administrador buscar todos usuarios
@@ -53,21 +51,19 @@ public class JobServices {
 	}
 	
 	//ENCONTAR TODOS OS JOBS DE UM DETERMINADO USUARIO
-	public Page<JobEntity> findAllUserJobs(Integer id, PageRequest page){
-		Optional <UserEntity> userOptional = userServices.findbyid(id);
-		return jobRepository.findByOwner(userOptional.get(), page);
+	public Page<JobEntity> findAllUserJobs(String nickname, PageRequest page){
+		UserEntity user = userServices.findByNickName(nickname);
+		return jobRepository.findByOwner(user, page);
 	}
 	
 	//Candidatar um usuario a vaga
-		public void candidatar(int userId, int jobId) throws  Exception{
-			Optional<UserEntity> userOptional = userServices.findbyid(userId);
+		public void candidatar(String nickname, int jobId) throws  Exception{
+			UserEntity user = userServices.findByNickName(nickname);
 			Optional<JobEntity> jobOptional = jobRepository.findById(jobId);
 			
-
-			if (jobOptional.isPresent() && userOptional.isPresent()) {
+			if (jobOptional.isPresent() && (user !=null)) {
 				JobEntity job = jobOptional.get();
-				UserEntity user = userOptional.get();
-				
+			
 				if (job.getOwner() != user) {
 					List<UserEntity> candidatos = job.getCandidatos();
 					List<JobEntity> candidatandoSe = user.getCandidatoAsVagas();

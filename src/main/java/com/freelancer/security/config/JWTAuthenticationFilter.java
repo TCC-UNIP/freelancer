@@ -56,7 +56,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		String token = Jwts.builder().setSubject(((User)auth.getPrincipal()).getUsername()).setExpiration(Date.from(expirationTimeUTC.toInstant()))
 		.signWith(SignatureAlgorithm.HS256, SECRET).compact();
 		
-		response.getWriter().write(token);
+		response.getWriter().write(TOKEN_PREFIX + token);
 		response.addHeader(HEADER_STRING, TOKEN_PREFIX + token );
 	
 		

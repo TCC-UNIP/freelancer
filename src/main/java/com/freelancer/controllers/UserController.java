@@ -1,10 +1,15 @@
 package com.freelancer.controllers;
+import java.io.Reader;
 import java.util.List;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -37,17 +42,24 @@ public class UserController {
 	//SAVAR USUARIO
 	@PutMapping(value="/user")
 	@ResponseBody
-	public UserEntity save(@RequestBody UserEntity user) {
+	public void save(@RequestBody UserEntity user, HttpServletResponse response) {
 		user.setPassword(userServ.encpritografarBcripty(user.getPassword()));
-		return userServ.save(user);
+		userServ.save(user);
+		response.setStatus(201);
 	}
 	
-	//ATUALIZA USUARIO
+	//ATUALIZA USUARIO obs nesse metodo não é possivel alterar nick name, necessario implementar alterações para que o usuario possa passar o nickname novo e antigo.
 	@PutMapping(value="/protected/user/update")
 	@ResponseBody
-	public UserEntity Update(@RequestBody UserEntity user) {
-		user.setPassword(userServ.encpritografarBcripty(user.getPassword()));
-		return userServ.update(user);
+	public void Update(@RequestBody UserEntity user, HttpServletResponse response, Authentication auth, HttpServletResponse reponse) {
+		if (auth.getName().equals(user.getNome())) {
+			user.setPassword(userServ.encpritografarBcripty(user.getPassword()));
+			userServ.update(user);
+			response.setStatus(200);
+		}else {
+			response.setStatus(403);
+		}
+
 	}
 	
 	
@@ -80,7 +92,7 @@ public class UserController {
 	}
 	
 	//ENCONTRAR TODOS USUARIOS POR NOME 
-	@GetMapping(value="protected/user/findname/{nome}/{page}/{nitens}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@GetMapping(value="admin/user/findname/{nome}/{page}/{nitens}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public List<UserEntity> findByNome(@PathVariable("nome") String nome, @PathVariable("page") int page, @PathVariable("nitens") int nitens){
 		Page<UserEntity> userPage = userServ.findByNome(nome, PageRequest.of(page, nitens) );
@@ -88,13 +100,18 @@ public class UserController {
 	}
 	
 	//encontrar os jobs em que um usuario esta se candidatando
-	@RequestMapping(value="protected/user/candidatando{id}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="protected/user/candidatando{nickname}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public List<JobEntity> candidatando(@Param("id") Integer id) {	
+	public List<JobEntity> candidatando(@Param("nickname") String nickname, Authentication auth, HttpServletResponse response) {	
 		
-			Optional<UserEntity> userOptioanl = userServ.findbyid(id);
-			UserEntity user = userOptioanl.get();
-			return user.getCandidatoAsVagas();
-		
+			UserEntity user = userServ.findByNickName(nickname);
+			
+			if ( auth.getName().equals(user.getNickname())) {
+				
+				return user.getCandidatoAsVagas();
+			}else{
+				response.setStatus(403);
+				return 	null;
+			}	
 	}
 }

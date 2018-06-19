@@ -1,5 +1,4 @@
 package com.freelancer.model;
-import java.beans.Transient;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -40,7 +39,18 @@ public class JobEntity {
 	@ManyToMany(mappedBy = "candidatoAsVagas",fetch = FetchType.LAZY,cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<UserEntity> candidatos;
 
-	@Transient
+	private String proprietarioNome;
+	
+	
+
+	public String getProprietarioNome() {
+		return proprietarioNome;
+	}
+
+	public void setProprietarioNome(String proprietarioNome) {
+		this.proprietarioNome = proprietarioNome;
+	}
+
 	public Integer getId() {
 		return id;
 	}
