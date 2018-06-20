@@ -1,5 +1,6 @@
 package com.freelancer.controllers;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,6 +49,7 @@ public class JobController {
 	//lista todos os serviços 
 	@GetMapping(value= "/job")
 	@ResponseBody
+	@CrossOrigin
 	public List<JobEntity> listaTodosJobs(){
 		return jobServ.listarServicos();
 	}

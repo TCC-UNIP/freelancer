@@ -23,6 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers(HttpMethod.PUT,"/user").permitAll();
 		
 		http.authorizeRequests().antMatchers(HttpMethod.POST,"/login").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.GET,"/job").permitAll();
 		//BLOQUEIA TODOS AS URLs NÃO MAPEADAS
 		http.authorizeRequests().anyRequest().authenticated();
 		//MAPEA URLS COMO PADRAO /ADMIN E / PROTECTED PARA SEREM ACESSADAS APENAS COM AUTORIZAÇÃO DE USER OU ADMIN
