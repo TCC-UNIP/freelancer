@@ -1,5 +1,6 @@
 package com.freelancer;
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -15,8 +16,8 @@ public class FreelancerApplication {
 	}
 	
 	@Bean
-	public FilterRegistrationBean corsFilterRegistration() {
-		FilterRegistrationBean registrationBean= new FilterRegistrationBean(new CORSFilter());
+	public FilterRegistrationBean<CORSFilter> corsFilterRegistration() {
+		FilterRegistrationBean<CORSFilter> registrationBean = new FilterRegistrationBean<CORSFilter>(new CORSFilter());
 		registrationBean.setName("CORS Filter");
 		registrationBean.addUrlPatterns("/*");
 		registrationBean.setOrder(1);
