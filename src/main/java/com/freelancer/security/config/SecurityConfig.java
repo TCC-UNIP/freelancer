@@ -31,8 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().configure(http);
 		//PERMITE URLS PARA USUARIO COM PADRAO /USER
-		http.authorizeRequests().antMatchers(HttpMethod.PUT,"/user").permitAll();
-		
+		http.authorizeRequests().antMatchers(HttpMethod.PUT,"/user").permitAll();	
 		http.authorizeRequests().antMatchers(HttpMethod.POST,"/login").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.GET,"/job").permitAll();
 		//BLOQUEIA TODOS AS URLs NÃO MAPEADAS

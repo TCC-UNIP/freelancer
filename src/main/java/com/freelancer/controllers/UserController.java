@@ -40,6 +40,7 @@ public class UserController {
 	@ResponseBody
 	public void save(@RequestBody UserEntity user, HttpServletResponse response) {
 		user.setPassword(userServ.encpritografarBcripty(user.getPassword()));
+		user.setAdmin(false);
 		userServ.save(user);
 		response.setStatus(201);
 	}
@@ -50,6 +51,7 @@ public class UserController {
 	public void Update(@RequestBody UserEntity user, HttpServletResponse response, Authentication auth, HttpServletResponse reponse) {
 		if (auth.getName().equals(user.getNome())) {
 			user.setPassword(userServ.encpritografarBcripty(user.getPassword()));
+			user.setAdmin(false);
 			userServ.update(user);
 			response.setStatus(200);
 		}else {
@@ -98,12 +100,9 @@ public class UserController {
 	//encontrar os jobs em que um usuario esta se candidatando
 	@RequestMapping(value="protected/user/candidatando{email}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public List<JobEntity> candidatando(@Param("email") String email, Authentication auth, HttpServletResponse response) {	
-		
-			UserEntity user = userServ.findByEmail(email);
-			
-			if ( auth.getName().equals(user.getEmail())) {
-				
+	public List<JobEntity> candidatando(@Param("email") String email, Authentication auth, HttpServletResponse response) {		
+			UserEntity user = userServ.findByEmail(email);			
+			if ( auth.getName().equals(user.getEmail())) {				
 				return user.getCandidatoAsVagas();
 			}else{
 				response.setStatus(403);

@@ -29,7 +29,6 @@ public class UserEntity  {
 	@Column(length=50, nullable=false)
 	private String nome;
 	
-
 	@Column(nullable=false)
 	@NotEmpty
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
