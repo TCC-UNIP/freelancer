@@ -23,10 +23,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private CustomUserDetailService customUserDatailService;
 	
-
-
-	
-	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().configure(http);

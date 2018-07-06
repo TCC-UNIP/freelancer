@@ -10,42 +10,44 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.freelancer.tratamentoErros.Resposta;
 
 @ControllerAdvice
-public class ErroControle {
+public class ExceptionControle {
 	//CONTROLA TODAS AS EXCPTIONS
 	
 	
-	//CONTROLA AS EXCEPTIONS NÇÃO TRATADAS
+	//CONTROLA AS EXCEPTIONS NÃO TRATADAS
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Resposta> exeptionGenerica(Exception e) throws Exception{
+	public ResponseEntity<Resposta> exceptionGenerica(Exception exception) throws Exception{
 		Resposta resposta = new Resposta();
 		resposta.setDescricao("ERRO, tarefa não realizada");
-		System.out.println(e);
+		System.out.println(exception);
 		return new ResponseEntity<Resposta> (resposta, HttpStatus.INTERNAL_SERVER_ERROR);
 		
 	}
 	
-	//CONTROLA EXCEPTIONS DO TIPO DataIntegrityViolationException
+	//CONTROLA EXCEPTIONS DO TIPO DataIntegrityViolationException (violação de primarykey and others)
 	@ExceptionHandler(DataIntegrityViolationException.class)
-	public ResponseEntity<Resposta> exeptionGenerica(DataIntegrityViolationException e) throws Exception{
+	public ResponseEntity<Resposta> violationSqlException(DataIntegrityViolationException exception) throws Exception{
 		Resposta resposta = new Resposta();
 		resposta.setDescricao("Registro já existe");
-		System.out.println(e);
+		System.out.println(exception);
 		return new ResponseEntity<Resposta> (resposta, HttpStatus.INTERNAL_SERVER_ERROR);	
 	}
 	
-	//CONTROLA EXCEPTIONS DO TIPO EmptyResultDataAccessException
+	//CONTROLA EXCEPTIONS DO TIPO EmptyResultDataAccessException, registros inexistentes.
 	@ExceptionHandler(EmptyResultDataAccessException.class)
-	public ResponseEntity<Resposta> registroInexistente(EmptyResultDataAccessException e) throws  Exception{
+	public ResponseEntity<Resposta> registroInexistente(EmptyResultDataAccessException exception) throws  Exception{
 		Resposta resposta = new Resposta();
 		resposta.setDescricao("Registro ou parametros inexistentes/incorretos");
+		System.out.println(exception);
 		return new ResponseEntity<Resposta> (resposta, HttpStatus.BAD_REQUEST);
 	}
 	
 	////CONTROLA EXCEPTIONS DO TIPO HttpRequestMethodNotSupportedException
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-	public ResponseEntity<Resposta> metodoRequisicaoNaoSuportado(HttpRequestMethodNotSupportedException e) throws  Exception{
+	public ResponseEntity<Resposta> metodoRequisicaoNaoSuportado(HttpRequestMethodNotSupportedException exception) throws  Exception{
 		Resposta resposta = new Resposta();
 		resposta.setDescricao("Metodo de requisição não suportado");
+		System.out.println(exception);
 		return new ResponseEntity<Resposta> (resposta, HttpStatus.BAD_REQUEST);
 	}		
 }

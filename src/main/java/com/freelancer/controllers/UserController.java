@@ -26,7 +26,10 @@ import com.freelancer.services.UserServices;
 public class UserController {
 	
 	@Autowired
-	UserServices userServ;
+	UserServices userServicos;
+	
+	//protecte = apenas perfil user pode acessar
+	//admin = apenas perfil admin pode acessar
 	
 	//PAGINA INDEX DE BOAS VINDAS
 	@RequestMapping(value="/")
@@ -39,20 +42,20 @@ public class UserController {
 	@PutMapping(value="/user")
 	@ResponseBody
 	public void save(@RequestBody UserEntity user, HttpServletResponse response) {
-		user.setPassword(userServ.encpritografarBcripty(user.getPassword()));
+		user.setPassword(userServicos.encpritografarBcripty(user.getPassword()));
 		user.setAdmin(false);
-		userServ.save(user);
+		userServicos.save(user);
 		response.setStatus(201);
 	}
 	
-	//ATUALIZA USUARIO obs nesse metodo não é possivel alterar nick name, necessario implementar alterações para que o usuario possa passar o email novo e antigo.
+	//ATUALIZA USUARIO obs nesse metodo não é possivel alterar email, necessario implementar alterações para que o usuario possa passar o email novo e antigo.
 	@PutMapping(value="/protected/user/update")
 	@ResponseBody
-	public void Update(@RequestBody UserEntity user, HttpServletResponse response, Authentication auth, HttpServletResponse reponse) {
-		if (auth.getName().equals(user.getNome())) {
-			user.setPassword(userServ.encpritografarBcripty(user.getPassword()));
+	public void updateUser(@RequestBody UserEntity user, HttpServletResponse response, Authentication authenticationToken, HttpServletResponse reponse) {
+		if (authenticationToken.getName().equals(user.getNome())) {
+			user.setPassword(userServicos.encpritografarBcripty(user.getPassword()));
 			user.setAdmin(false);
-			userServ.update(user);
+			userServicos.update(user);
 			response.setStatus(200);
 		}else {
 			response.setStatus(403);
@@ -64,8 +67,8 @@ public class UserController {
 	//LISTAR TODOS USUARIOS PAGINADOS
 	@GetMapping(value="admin/user/{page}/{nitens}")
 	@ResponseBody
-	public List<UserEntity> listar(@PathVariable("page")int page, @PathVariable("nitens")int nitens){
-		Page<UserEntity> pageRequest = userServ.listAllUsers(PageRequest.of(page, nitens));
+	public List<UserEntity> listarUsers(@PathVariable("page")int page, @PathVariable("nitens")int nitens){
+		Page<UserEntity> pageRequest = userServicos.listAllUsers(PageRequest.of(page, nitens));
 		 List<UserEntity> list = pageRequest.getContent();
 		return list;
 		
@@ -76,7 +79,7 @@ public class UserController {
 	@ResponseBody
 	public  Optional<UserEntity> findbyid(@Param("id") Integer id) {	
 		
-		return userServ.findbyid(id) ;
+		return userServicos.findbyid(id) ;
 		
 	}
 	
@@ -85,7 +88,7 @@ public class UserController {
 	@ResponseBody
 	public void deleteById(@Param("id") Integer id) {	
 		
-		userServ.delete(id);
+		userServicos.delete(id);
 		
 	}
 	
@@ -93,7 +96,7 @@ public class UserController {
 	@GetMapping(value="admin/user/findname/{nome}/{page}/{nitens}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public List<UserEntity> findByNome(@PathVariable("nome") String nome, @PathVariable("page") int page, @PathVariable("nitens") int nitens){
-		Page<UserEntity> userPage = userServ.findByNome(nome, PageRequest.of(page, nitens) );
+		Page<UserEntity> userPage = userServicos.findByNome(nome, PageRequest.of(page, nitens) );
 		return userPage.getContent();
 	}
 	
@@ -101,7 +104,7 @@ public class UserController {
 	@RequestMapping(value="protected/user/candidatando{email}", method= RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public List<JobEntity> candidatando(@Param("email") String email, Authentication auth, HttpServletResponse response) {		
-			UserEntity user = userServ.findByEmail(email);			
+			UserEntity user = userServicos.findByEmail(email);			
 			if ( auth.getName().equals(user.getEmail())) {				
 				return user.getCandidatoAsVagas();
 			}else{
