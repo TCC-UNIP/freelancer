@@ -41,6 +41,9 @@ public class JobEntity {
 	@Column(length=50)
 	private String proprietarioNome;
 	
+	@Column(nullable=false, length=300)
+	private String descricao;
+	
 	@Column(length=50)
 	private String localizacao;
 	
@@ -107,6 +110,14 @@ public class JobEntity {
 
 	public void setCandidatos(List<UserEntity> candidatos) {
 		this.candidatos = candidatos;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	
